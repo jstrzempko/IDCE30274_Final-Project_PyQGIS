@@ -70,9 +70,13 @@ I would recommend downloading using OSGeo4W if you intend to perform further GIS
 
 ### PyQGIS
 
-The QGIS user interface is very similar to that of ArcMap. 
+Once you have opened QGIS, explore the menu and buttons. The user interface is very similar to that of ArcMap. If you would like to get familiar with the software and explore its capabilities, I suggest following along with [another tutorial](https://www.youtube.com/watch?v=kCnNWyl9qSE&vl=en). Open the Python Console by either clicking the toolbar button, as is shown in the screenshot below, or by going to Plugins > Python Console in the top ribbon. 
 
 ![](images/qgis_pythonconsole.PNG)
 
 
-work with the data (in qgis in the python console)
+
+
+
+
+
