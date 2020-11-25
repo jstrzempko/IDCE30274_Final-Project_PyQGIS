@@ -32,9 +32,14 @@ The first question that arises when downloading QGIS is - what is OSGeo4W? A [ni
 
 I would recommend downloading using OSGeo4W if you intend to perform further GIS/programming work on your personal computer. Having dependencies already installed can be incredibly useful in the future and save time and energy (and prevent frustration). However, if you feel that your foray into GIS will be limited or you are inexperienced, I would suggest downloading using the QGIS Standalone Installer. Choice of 32 vs 64 bit depends on [what processor](https://www.techsoup.org/Support/articles-and-how-tos/do-i-need-the-32bit-or-64bit) your personal computer has. More and more often, personal computers have 64-bit processors, but if you are concerned you should verify this information. 
 
-![](osgeo4w_setup.PNG)
-![](osgeo4w_setup2.PNG)
-2-8
+![](images/osgeo4w_setup.PNG)
+![](images/osgeo4w_setup2.PNG)
+![](images/osgeo4w_setup3.PNG)
+![](images/osgeo4w_setup4.PNG)
+![](images/osgeo4w_setup5.PNG)
+![](images/osgeo4w_setup6.PNG)
+![](images/osgeo4w_setup7.PNG)
+![](images/osgeo4w_setup8.PNG)
 
 Don’t blindly do a full install of OSGeo4W. Only install QGIS and maybe other components you like. Dependencies will be included automatically. A full install pulls in components that require third party additions, which need to be installed manually. These components render the installation unusable without those additions.
 
