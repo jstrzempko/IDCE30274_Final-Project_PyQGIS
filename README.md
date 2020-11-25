@@ -24,9 +24,19 @@ Data should be downloaded from [the US Crisis Monitor site](https://acleddata.co
 
 ### Downloading QGIS 
 
-downloading QGIS: [download.qgis.org](download.qgis.org)
+QGIS can be downloaded for free from the [QGIS website](download.qgis.org). This tutorial will explain some points of confusion surrounding the process, but assumes users have previous experience downloading programs to their personal computers. QGIS can be downloaded for Windows, MacOS X, Linux, BDS, and Android. This tutorial will focus on a Windows downloads. Assistance with other operating systems can be found on the [QGIS Installers page](https://qgis.org/en/site/forusers/alldownloads.html). 
 
 ![](images/download_qgis.PNG)
+
+The first question that arises when downloading QGIS is - what is OSGeo4W? A [nice and quick explanation](https://gis.stackexchange.com/questions/164976/what-is-osgeo4w) of OSGeo and OSGeo4W can be found by StackExchange user HeikkiVesanto. To paraphrase, OSGeo, [The Open Source Geospatial Foundation](https://www.osgeo.org/) supports open source GIS projects like QGIS, GeoServer, and OpenLayers, offering legitimacy and quality assurance. OSGeo4W is a Windows installer for Open Source GIS projects. It keeps track of the dependencies (reliance of one piece of software on another) of Open Source GIS packages, ensuring that one install of programs like Python, GDAL, or GRASS can be shared among softwares. It also maintains software versions so you can easily upgrade programs. 
+
+I would recommend downloading using OSGeo4W if you intend to perform further GIS/programming work on your personal computer. Having dependencies already installed can be incredibly useful in the future and save time and energy (and prevent frustration). However, if you feel that your foray into GIS will be limited or you are inexperienced, I would suggest downloading using the QGIS Standalone Installer. Choice of 32 vs 64 bit depends on [what processor](https://www.techsoup.org/Support/articles-and-how-tos/do-i-need-the-32bit-or-64bit) your personal computer has. More and more often, personal computers have 64-bit processors, but if you are concerned you should verify this information. 
+
+![](osgeo4w_setup.PNG)
+![](osgeo4w_setup2.PNG)
+2-8
+
+Don’t blindly do a full install of OSGeo4W. Only install QGIS and maybe other components you like. Dependencies will be included automatically. A full install pulls in components that require third party additions, which need to be installed manually. These components render the installation unusable without those additions.
 
 ### PyQGIS
 
