@@ -4,6 +4,10 @@ This tutorial serves as an introduction to both QGIS and the use of Python scrip
 
 ### Objectives
 
+* To introduce users to the use of Python scripting in QGIS
+* To promote the use of open source software through a demonstration of its capabilities
+* To explore the ACLED US Crisis Monitor dataset
+
 ### Data
 
 Data for this tutorial is sourced from [ACLED](acleddata.com), the Armed Conflict Location & Event Data Project. ACLED is a registered non-profit organization with 501(c)(3) status operating in the United States that compiles spatial and attribute data on worldwide crises. These include political violence, civil and communal conflicts, violence against civilians, remote violence, rioting, and protesting. ACLED has [teams of research analysts](https://acleddata.com/about-acled/) that collect, analyze, and map events in these regions: Africa, East Asia, South Asia, Southeast Asia, the Middle East, Central Asia and the Caucasus, Latin America and the Caribbean, and Southeastern and Eastern Europe and the Balkans. 
