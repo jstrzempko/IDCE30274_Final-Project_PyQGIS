@@ -30,19 +30,33 @@ QGIS can be downloaded for free from the [QGIS website](download.qgis.org). This
 
 The first question that arises when downloading QGIS is - what is OSGeo4W? A [nice and quick explanation](https://gis.stackexchange.com/questions/164976/what-is-osgeo4w) of OSGeo and OSGeo4W can be found by StackExchange user HeikkiVesanto. To paraphrase, OSGeo, [The Open Source Geospatial Foundation](https://www.osgeo.org/) supports open source GIS projects like QGIS, GeoServer, and OpenLayers, offering legitimacy and quality assurance. OSGeo4W is a Windows installer for Open Source GIS projects. It keeps track of the dependencies (reliance of one piece of software on another) of Open Source GIS packages, ensuring that one install of programs like Python, GDAL, or GRASS can be shared among softwares. It also maintains software versions so you can easily upgrade programs. 
 
-I would recommend downloading using OSGeo4W if you intend to perform further GIS/programming work on your personal computer. Having dependencies already installed can be incredibly useful in the future and save time and energy (and prevent frustration). However, if you feel that your foray into GIS will be limited or you are inexperienced, I would suggest downloading using the QGIS Standalone Installer. Choice of 32 vs 64 bit depends on [what processor](https://www.techsoup.org/Support/articles-and-how-tos/do-i-need-the-32bit-or-64bit) your personal computer has. More and more often, personal computers have 64-bit processors, but if you are concerned you should verify this information. 
+I would recommend downloading using OSGeo4W if you intend to perform further GIS/programming work on your personal computer. Having dependencies already installed can be incredibly useful in the future and save time and energy (and prevent frustration). However, if you feel that your foray into Open Source GIS will be limited, I would suggest downloading using the QGIS Standalone Installer. Choice of 32 vs 64 bit depends on [what processor](https://www.techsoup.org/Support/articles-and-how-tos/do-i-need-the-32bit-or-64bit) your personal computer has. I would recommend downloading the 64-bit since most modern personal computers have 64-bit processors, but if you are concerned you should check. 
 
+<p align="center"> After downloading OSGeo4W from the above website, open the OSGeo4W Net Release Setup Program and you should see the below screen. Select Advanced Install then Next. </p>
 ![](images/osgeo4w_setup.PNG)
+<p align="center"> We will be downloading from the internet, so ensure you have a strong wifi connection before performing the below steps. Choose Install from Internet then Next. </p>
 ![](images/osgeo4w_setup2.PNG)
+<p align="center"> Choose the Installation Directory. I typically leave the Root Directory as the default and opt to add an icon on both my Desktop and Start Menu. </p>
 ![](images/osgeo4w_setup3.PNG)
+<p align="center"> Select Local Package Directory. Again, leaving this as the default option is a good decision. </p>
 ![](images/osgeo4w_setup4.PNG)
+<p align="center"> Select your Internet Connection type. Most often, this will be Direct Connection. </p>
 ![](images/osgeo4w_setup5.PNG)
+<p align="center"> Choose a download site. I generally select one of the OSGeo ones. </p>
 ![](images/osgeo4w_setup6.PNG)
+<p align="center"> Here, you will select the packages to install. As you can see in the below screenshot, I have version 3.12.3-1 of QGIS already installed, but can update to 3.16.0-1 by hitting Skip next to the Package name to change the action performed. Do this for qgis: QGIS Desktop. Don't worry about dependencies right now and ddon’t blindly do a full install of available packages. Select Next. </p>
 ![](images/osgeo4w_setup7.PNG)
+<p align="center"> Here are the dependencies! OSGeo4W will resolve them for you by installing them at the same time. If these components are not installed, your QGIS copy will be rendered unusable. Ensure the box to install them is selected at the bottom of the page. </p>
 ![](images/osgeo4w_setup8.PNG)
 
-Don’t blindly do a full install of OSGeo4W. Only install QGIS and maybe other components you like. Dependencies will be included automatically. A full install pulls in components that require third party additions, which need to be installed manually. These components render the installation unusable without those additions.
+<p align="center"> Now, when you go to your start menu and type QGIS you should see the QGIS 3 App! Select it to get started. </p>
+![](images/qgis_startmennu.PNG)
 
 ### PyQGIS
+
+The QGIS user interface is very similar to that of ArcMap. 
+
+![](images/qgis_pythonconsole.PNG)
+
 
 work with the data (in qgis in the python console)
