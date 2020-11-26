@@ -74,9 +74,19 @@ Once you have opened QGIS, explore the menu and buttons. The user interface is v
 
 ![](images/qgis_pythonconsole.PNG)
 
+For user convenience, the following statements are executed when the console is started (in the future it will be possible to set further initial commands)
 
+```
+from qgis.core import *
+import qgis.utils
+```
 
+Every time QGIS starts, the user’s Python home directory
+    Linux: .local/share/QGIS/QGIS3
+    Windows: AppData\Roaming\QGIS\QGIS3
+    macOS: Library/Application Support/QGIS/QGIS3
 
+from qgis.core import 
 
 
 
