@@ -74,12 +74,43 @@ Once you have opened QGIS, explore the menu and buttons. The user interface is v
 
 ![](images/qgis_pythonconsole.PNG)
 
-For user convenience, the following statements are executed when the console is started (in the future it will be possible to set further initial commands)
+Similar to the way `import arcpy` is run automatically when the Python console is opened in ArcMap, the following statements are executed in the QGIS Python console as an initial default.  
 
 ```
 from qgis.core import *
 import qgis.utils
 ```
+
+*************************************
+
+Open the USA_2020_Nov21.csv file you have downloaded from the US Crisis Monitor site, take note of the LONGITUDE and LATITUDE fields
+
+Layer > Add Layer > Add Delimited Text Layer
+File name: USA_2020_Nov21
+File format: CSV
+Leave everything else as default
+
+Right click > Properties
+Information
+Information from Provider
+Right click path > Copy Link Location
+Go to file location in computer (where you have saved it), right click Properties
+Location will give the file path starting from the drive that you can copy and use in the next exercise
+
+for example, mine would be 
+path = "file:///C:/Users/jas36/Documents/Clark/Year%205/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?delimiter=
+file:// is needed before the path to the csv file we want
+
+Source
+file:///C:/Users/jas36/Documents/Clark/Year%205/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?type=csv&maxFields=10000&detectTypes=yes&xField=LONGITUDE&yField=LATITUDE&crs=EPSG:3857&spatialIndex=no&subsetIndex=no&watchFile=no
+
+CSV or other delimited text files — to open a file with a semicolon as a delimiter, with field “x” for X coordinate and field “y” for Y coordinate you would use something like this:
+
+uri = "file://{}/testdata/delimited_xy.csv?delimiter={}&xField={}&yField={}".format(os.getcwd(), ";", "x", "y")
+vlayer = QgsVectorLayer(uri, "layer name you like", "delimitedtext")
+QgsProject.instance().addMapLayer(vlayer)
+
+uri = "elevp.csv?delimiter=%s&xField=%s&yField=%s&elevField=%s" % (";","x","y","elev")
 
 Every time QGIS starts, the user’s Python home directory
     Linux: .local/share/QGIS/QGIS3
@@ -88,5 +119,20 @@ Every time QGIS starts, the user’s Python home directory
 
 from qgis.core import 
 
+```
+# get the path to the shapefile e.g. /home/project/data/ports.shp
+path_to_airports_layer = "testdata/airports.shp"
 
+# The format is:
+# vlayer = QgsVectorLayer(data_source, layer_name, provider_name)
 
+vlayer = QgsVectorLayer(path_to_airports_layer, "Airports layer", "ogr")
+if not vlayer.isValid():
+    print("Layer failed to load!")
+else:
+    QgsProject.instance().addMapLayer(vlayer)
+```
+
+### Credits
+
+[PyQGIS 101](https://anitagraser.com/pyqgis-101-introduction-to-qgis-python-programming-for-non-programmers/)
