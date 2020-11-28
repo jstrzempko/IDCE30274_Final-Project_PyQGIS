@@ -18,7 +18,7 @@ Both the data and analysis performed by ACLED is free for use, which is why we w
 
 ![](images/download_acled.PNG)
 
-Data should be downloaded from [the US Crisis Monitor site](https://acleddata.com/special-projects/us-crisis-monitor/). It should then be opened in Excel and saved as a CSV UTF-8 (Comma Delimited) (`.csv`) file for ease of use with QGIS (and other software). Should problems arise, a back-up version of the `.csv` file is provided in the data folder within this repository. 
+Data should be downloaded from [the US Crisis Monitor site](https://acleddata.com/special-projects/us-crisis-monitor/). It should then be opened in Excel and saved as a CSV UTF-8 (Comma Delimited) (`.csv`) file for ease of use with QGIS (and other software). Should problems arise, a back-up version of the `.csv` file is provided in the data folder within this repository. Once you have downloaded the file and put it in the appropriate location, open it (`USA_2020_Nov21.csv`) and inspect the different attribute fields, taking note of the LONGITUDE and LATITUDE fields. 
 
 ## Tutorial Steps
 
@@ -56,7 +56,7 @@ I would recommend downloading using OSGeo4W if you intend to perform further GIS
 
 ![](images/osgeo4w_setup6.PNG)
 
-**<p align="center"> Here, you will select the packages to install. As you can see in the below screenshot, I have version 3.12.3-1 of QGIS already installed, but can update to 3.16.0-1 by hitting Skip next to the Package name to change the action performed. Do this for qgis: QGIS Desktop. Don't worry about dependencies right now and ddon’t blindly do a full install of available packages. Select Next. </p>**
+**<p align="center"> Here, you will select the packages to install. As you can see in the below screenshot, I have version 3.12.3-1 of QGIS already installed, but can update to 3.16.0-1 by hitting Skip next to the Package name to change the action performed. Do this for qgis: QGIS Desktop. Don't worry about dependencies for now and don’t blindly do a full install of available packages. Select Next. </p>**
 
 ![](images/osgeo4w_setup7.PNG)
 
@@ -74,88 +74,98 @@ Once you have opened QGIS, explore the menu and buttons. The user interface is v
 
 ![](images/qgis_pythonconsole.PNG)
 
-Similar to the way `import arcpy` is run automatically when the Python console is opened in ArcMap, the following statements are executed in the QGIS Python console as an initial default.  
+Similar to the way `import arcpy` is run automatically when the Python console is opened in ArcMap, the following statements are executed in the QGIS Python console as an initial default. Since we will be working within the console, there is no need to run these lines of code, but it is good to know. 
 
 ```
 from qgis.core import *
 import qgis.utils
 ```
 
-**Setting Path Name**
+#### Importing CSV File
 
-![](file_location.PNG)
+First thing we will do is run the following command in the Python console. Within the miscellaneous operating system interfaces (`os`), we will use the `.getcwd()` function to get the current working directory. You can copy and paste the code below or type it in yourself after the `>>>` symbol in the bottom of the console. You can then press Enter or hit the Run Command button (small blue triangle) as shown below. As you can see, my current working directory is `'C:\\Users\\jas36\\Documents'`.
+
+```
+os.getcwd()
+```
+
+![](run_command.PNG)
+
+From here on out, we will be making use of the Editor, which can be accessed by pressing the small icon of a paper and pen as shown below. 
 
 ![](show_editor.PNG)
 
-Console vs. Editor
+This will bring up the Editor window next to the Python console. Make the Editor larger than the console by moving the divider between the two to the left. We will use the Editor to construct a script that can be run all at once (instead of line by line in the console). 
 
-Open the USA_2020_Nov21.csv file you have downloaded from the US Crisis Monitor site, take note of the LONGITUDE and LATITUDE fields
-os.getcwd()
-to get the current working directory
+![](editor.PNG)
 
-how to construct:
+Next, we will need the path to the ACLED file we want to access. We only need to know the subfolders that the file resides in beyond the working directory. So, in my case, we will already be starting in the Documents folder and only need to construct the path name from there. I suggest finding the full file path by opening the File Explorer and navigating to the file, named something like `USA_2020_Nov21.csv`. Right click the file and select Properties to find the file location as shown below. Copy the entire file path starting from the drive (C: drive in my case) for use in the following exercises. 
 
-example
+![](file_location.PNG)
 
-path1 = "file:///C:/Users/jas36/Documents/Clark/Year%205/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?type=csv&xField=LONGITUDE&yField=LATITUDE&crs=EPSG:3857"
-path2 = "file:///C:/Users/jas36/Documents/Clark/Year%205/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?delimiter=,&xField=LONGITUDE&yField=LATITUDE&crs=EPSG:3857"
-path3 = "file:///{}/Clark/Year%205/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?delimiter={}&xField={}&yField={}".format(os.getcwd(), ",", "LONGITUDE", "LATITUDE")
+To import the csv file, we would normally use the QGIS Graphic User Interface (GUI) to select Layer > Add Layer > Add Delimited Text Layer. From there we would select the correct file name and select the option for a CSV file format. This is shown below for those unfamiliar with the QGIS GUI.
 
-path = "file:///C:/Users/jas36/Documents/Clark/Year%205/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?delimiter=,&xField=LONGITUDE&yField=LATITUDE"
+![](load_csv.PNG)
 
-path = "file:///C:/Users/jas36/Documents/Clark/Year%205/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?delimiter=,&xField=LONGITUDE&yField=LATITUDE&crs=EPSG:3857"
-
-Open the USA_2020_Nov21.csv file you have downloaded from the US Crisis Monitor site, take note of the LONGITUDE and LATITUDE fields
-
-Layer > Add Layer > Add Delimited Text Layer
-File name: USA_2020_Nov21
-File format: CSV
-Leave everything else as default
-
-Right click > Properties
-Information
-Information from Provider
-Right click path > Copy Link Location
-Go to file location in computer (where you have saved it), right click Properties
-Location will give the file path starting from the drive that you can copy and use in the next exercise
-
-for example, mine would be 
-path = "file:///C:/Users/jas36/Documents/Clark/Year%205/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?type=csv&xField=LONGITUDE&yField=LATITUDE&crs=EPSG:3857
-file:// is needed before the path to the csv file we want
-
-EPSG3857 The most common CRS for online maps, used by almost all free and commercial tile providers. Uses Spherical Mercator projection.
-
-Source
-file:///C:/Users/jas36/Documents/Clark/Year%205/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?type=csv&maxFields=10000&detectTypes=yes&xField=LONGITUDE&yField=LATITUDE&crs=EPSG:3857&spatialIndex=no&subsetIndex=no&watchFile=no
-
-CSV or other delimited text files — to open a file with a semicolon as a delimiter, with field “x” for X coordinate and field “y” for Y coordinate you would use something like this:
-
-uri = "file://{}/testdata/delimited_xy.csv?delimiter={}&xField={}&yField={}".format(os.getcwd(), ";", "x", "y")
-vlayer = QgsVectorLayer(uri, "layer name you like", "delimitedtext")
-QgsProject.instance().addMapLayer(vlayer)
-
-uri = "elevp.csv?delimiter=%s&xField=%s&yField=%s&elevField=%s" % (";","x","y","elev")
-
-Every time QGIS starts, the user’s Python home directory
-    Linux: .local/share/QGIS/QGIS3
-    Windows: AppData\Roaming\QGIS\QGIS3
-    macOS: Library/Application Support/QGIS/QGIS3
-
-from qgis.core import 
+Instead, will construct a script to do this for us! The first thing we will create is a string that gives the file path within the Editor. All QGIS file paths must begin with `file:///`. Assign your file path the name `path1` and finish it with the file name and extension. See my example below. 
 
 ```
-# get the path to the shapefile e.g. /home/project/data/ports.shp
-path_to_airports_layer = "testdata/airports.shp"
+path1 = "file:///C:/Users/jas36/Documents/Clark/Year 5/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv"
+```
 
-# The format is:
-# vlayer = QgsVectorLayer(data_source, layer_name, provider_name)
+Next, we will add to this path so that QGIS can recognize our file type and interpret the proper fields to plot the location of the point data. Add `?type=csv` to the end of the file path string. Next, add `&xField=LONGITUDE` and `&yField=LATITUDE` immediately after this. This tells QGIS to look for a csv file with the field names LONGITUDE and LATITUDE for the x and y fields for plotting. 
 
+```
+path1 = "file:///C:/Users/jas36/Documents/Clark/Year 5/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?type=csv&xField=LONGITUDE&yField=LATITUDE"
+```
+
+Next, we will use the `QgsVectorLayer` function to construct a vector layer using our path name then we will add this layer to the map. The format is `layer = QgsVectorLayer(data_source, layer_name, provider_name)` where layer_name will be the name assigned to the layer in the Table of Contents. In our instance, provider_name is "delimitedtext," a more general term for a CSV file in which delimiters can be more than just commas. See my example below to add to your script. 
+
+```
+layer1 = QgsVectorLayer(path1, "ACLED_Nov2020", "delimitedtext")
+QgsProject.instance().addMapLayer(layer1)
+```
+
+Run the script using the Run Script button in the top ribbon of the Editor. The layer should appear in your Table of Contents (TOC). If you are unable to see the points in the window, right click on the layer and select Zoom to Layer. You should see a rough outline of the US constructed out of points. 
+
+Note the box with the question mark next to the layer that says "Layer has no coordinate reference system set!" when hovered over. We can modify our existing script to fix this and set a coordinate reference system in one fell swoop. First, we must remove the unreferenced layer. Run the below code in the console (not the Editor), and the layer should disappear from the TOC. 
+
+```
+QgsProject.instance().removeMapLayer(layer1)
+```
+
+Copy and paste path1 to create path2 directly below it. Comment out path1. In path2, add `&crs=EPSG:3857` to the end. EPSG 3587 is a Spherical Mercator projection coordinate system used by web services such as Google and OpenStreetMap.
+
+```
+path2 = "file:///C:/Users/jas36/Documents/Clark/Year 5/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?type=csv&xField=LONGITUDE&yField=LATITUDE&crs=EPSG:3857"
+```
+
+There are other ways to construct this file path. For instance, replacing `?type=csv` with `?delimiter=,` to create a path name like so. 
+
+```
+path3 = "file:///C:/Users/jas36/Documents/Clark/Year 5/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?delimiter=,&xField=LONGITUDE&yField=LATITUDE&crs=EPSG:3857"
+```
+
+An even fancier method is to employ the `.format()` and `os.getcwd()` functions. See below. 
+
+```
+path4 = "file:///{}/Clark/Year 5/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?delimiter={}&xField={}&yField={}&crs={}".format(os.getcwd(), ",", "LONGITUDE", "LATITUDE", "EPSG:3857")
+```
+
+Additionally, we can use an if-else statement to only add the layer to the map if it is valid. See below. 
+
+```
 vlayer = QgsVectorLayer(path_to_airports_layer, "Airports layer", "ogr")
 if not vlayer.isValid():
     print("Layer failed to load!")
 else:
     QgsProject.instance().addMapLayer(vlayer)
 ```
+
+Feel free to construct a script that works best for you (so long as it accomplishes the task of adding the correct layer to the map). 
+
+#### Next Step
+
 
 ### Credits
 
