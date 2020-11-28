@@ -81,7 +81,29 @@ from qgis.core import *
 import qgis.utils
 ```
 
-*************************************
+**Setting Path Name**
+
+![](file_location.PNG)
+
+![](show_editor.PNG)
+
+Console vs. Editor
+
+Open the USA_2020_Nov21.csv file you have downloaded from the US Crisis Monitor site, take note of the LONGITUDE and LATITUDE fields
+os.getcwd()
+to get the current working directory
+
+how to construct:
+
+example
+
+path1 = "file:///C:/Users/jas36/Documents/Clark/Year%205/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?type=csv&xField=LONGITUDE&yField=LATITUDE&crs=EPSG:3857"
+path2 = "file:///C:/Users/jas36/Documents/Clark/Year%205/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?delimiter=,&xField=LONGITUDE&yField=LATITUDE&crs=EPSG:3857"
+path3 = "file:///{}/Clark/Year%205/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?delimiter={}&xField={}&yField={}".format(os.getcwd(), ",", "LONGITUDE", "LATITUDE")
+
+path = "file:///C:/Users/jas36/Documents/Clark/Year%205/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?delimiter=,&xField=LONGITUDE&yField=LATITUDE"
+
+path = "file:///C:/Users/jas36/Documents/Clark/Year%205/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?delimiter=,&xField=LONGITUDE&yField=LATITUDE&crs=EPSG:3857"
 
 Open the USA_2020_Nov21.csv file you have downloaded from the US Crisis Monitor site, take note of the LONGITUDE and LATITUDE fields
 
@@ -98,8 +120,10 @@ Go to file location in computer (where you have saved it), right click Propertie
 Location will give the file path starting from the drive that you can copy and use in the next exercise
 
 for example, mine would be 
-path = "file:///C:/Users/jas36/Documents/Clark/Year%205/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?delimiter=
+path = "file:///C:/Users/jas36/Documents/Clark/Year%205/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?type=csv&xField=LONGITUDE&yField=LATITUDE&crs=EPSG:3857
 file:// is needed before the path to the csv file we want
+
+EPSG3857 The most common CRS for online maps, used by almost all free and commercial tile providers. Uses Spherical Mercator projection.
 
 Source
 file:///C:/Users/jas36/Documents/Clark/Year%205/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?type=csv&maxFields=10000&detectTypes=yes&xField=LONGITUDE&yField=LATITUDE&crs=EPSG:3857&spatialIndex=no&subsetIndex=no&watchFile=no
