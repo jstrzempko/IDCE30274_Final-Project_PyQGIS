@@ -81,7 +81,7 @@ from qgis.core import *
 import qgis.utils
 ```
 
-#### Importing CSV File
+#### Import CSV File
 
 First thing we will do is run the following command in the Python console. Within the miscellaneous operating system interfaces (`os`), we will use the `.getcwd()` function to get the current working directory. You can copy and paste the code below or type it in yourself after the `>>>` symbol in the bottom of the console. You can then press Enter or hit the Run Command button (small blue triangle) as shown below. As you can see, my current working directory is `'C:\\Users\\jas36\\Documents'`.
 
@@ -164,9 +164,39 @@ else:
 
 Feel free to construct a script that works best for you (so long as it accomplishes the task of adding the correct layer to the map). 
 
-#### Next Step
+#### Explore the Data
 
+Next, we will explore the data we have imported by examining the fields in the attribute table. One way we can accomplish this is to access the fields in the layer using the  `.fields()` function and iterate through them to output both the field names and types. Run the following the for loop in your console then add this to your script in the Editor (without running it here as it will produce another vector layer). 
 
-### Credits
+```
+for field in layer1.fields():
+    print(field.name(), field.typeName())
+```
+Below is a sample of the output you should get. 
+
+![](images/fieldnames_types.PNG)
+
+Another way to accomplish this is to employ iface. In the words of Anita Graser from the blog ["Free and Open Source GIS Ramblings,"](https://anitagraser.com/) "iface is an object belonging to QGIS – something that has properties and behaviors we can use to interact with QGIS. iface is a very important object in QGIS because without it, we could not interact with QGIS or any layers loaded in our project." The iface class is used to access graphical components in QGIS such as the displayed layers.
+
+```
+iface.showAttributeTable(layer1)
+```
+
+When we run the above code in the console, it should open the attribute table for us, as shown below. Take note of the "ADMIN1" and "SUB_EVENT_TYPE" fields. 
+
+![](images/attribute_table.PNG)
+
+#### Perform Analysis
+
+```
+iface.setActiveLayer(layer)
+layer = iface.activeLayer()
+layer.selectByExpression('"ADMIN1"!=\'Alaska\' and "ADMIN1"!=\'Hawaii\' and "SUB_EVENT_TYPE"=\'Peaceful protest\'', QgsVectorLayer.SetSelection)
+```
+
+## Credits
 
 [PyQGIS 101](https://anitagraser.com/pyqgis-101-introduction-to-qgis-python-programming-for-non-programmers/)
+
+[PyQGIS Developer Cookbook](https://docs.qgis.org/testing/en/docs/pyqgis_developer_cookbook/index.html)
+
