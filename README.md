@@ -89,23 +89,23 @@ First thing we will do is run the following command in the Python console. Withi
 os.getcwd()
 ```
 
-![](run_command.PNG)
+![](images/run_command.PNG)
 
 From here on out, we will be making use of the Editor, which can be accessed by pressing the small icon of a paper and pen as shown below. 
 
-![](show_editor.PNG)
+![](images/show_editor.PNG)
 
 This will bring up the Editor window next to the Python console. Make the Editor larger than the console by moving the divider between the two to the left. We will use the Editor to construct a script that can be run all at once (instead of line by line in the console). 
 
-![](editor.PNG)
+![](images/editor.PNG)
 
 Next, we will need the path to the ACLED file we want to access. We only need to know the subfolders that the file resides in beyond the working directory. So, in my case, we will already be starting in the Documents folder and only need to construct the path name from there. I suggest finding the full file path by opening the File Explorer and navigating to the file, named something like `USA_2020_Nov21.csv`. Right click the file and select Properties to find the file location as shown below. Copy the entire file path starting from the drive (C: drive in my case) for use in the following exercises. 
 
-![](file_location.PNG)
+![](images/file_location.PNG)
 
 To import the csv file, we would normally use the QGIS Graphic User Interface (GUI) to select Layer > Add Layer > Add Delimited Text Layer. From there we would select the correct file name and select the option for a CSV file format. This is shown below for those unfamiliar with the QGIS GUI.
 
-![](load_csv.PNG)
+![](images/load_csv.PNG)
 
 Instead, will construct a script to do this for us! The first thing we will create is a string that gives the file path within the Editor. All QGIS file paths must begin with `file:///`. Assign your file path the name `path1` and finish it with the file name and extension. See my example below. 
 
@@ -134,7 +134,7 @@ Note the box with the question mark next to the layer that says "Layer has no co
 QgsProject.instance().removeMapLayer(layer1)
 ```
 
-Copy and paste path1 to create path2 directly below it. Comment out path1. In path2, add `&crs=EPSG:3857` to the end. EPSG 3587 is a Spherical Mercator projection coordinate system used by web services such as Google and OpenStreetMap.
+Copy and paste path1 to create path2 directly below it. Comment out path1. In path2, add `&crs=EPSG:3857` to the end. EPSG 3587 is a Spherical Mercator projection coordinate system used by web services such as Google and OpenStreetMap. Run the script again, making sure to change the path name from path1 to path2 in the second line. 
 
 ```
 path2 = "file:///C:/Users/jas36/Documents/Clark/Year 5/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?type=csv&xField=LONGITUDE&yField=LATITUDE&crs=EPSG:3857"
