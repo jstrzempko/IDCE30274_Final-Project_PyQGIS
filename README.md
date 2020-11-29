@@ -207,7 +207,12 @@ QgsProject.instance().addMapLayer(layer2)
 
 As can be seen in the code above, we use materialize to create a memory layer and request the features of the selected feature IDs to compose the new layer. Similar to before, we run the `.addMapLayer()` function with the argument of the new memory layer in order to see it display.  
 
+Lastly, we will
+
 ```
+for feature in layer.getFeatures(QgsFeatureRequest()):
+    
+
 # Reproject to EPSG 5070 (Albers Equal Area Contiguous US)
 #crsSrc = QgsCoordinateReferenceSystem("EPSG:4326")
 #crsDest = QgsCoordinateReferenceSystem("EPSG:5070")
@@ -228,12 +233,21 @@ As can be seen in the code above, we use materialize to create a memory layer an
 #destCrs = QgsCoordinateReferenceSystem(5070)
 #tr = QgsCoordinateTransform(sourceCrs, destCrs, QgsProject.instance())
 #myGeometryInstance.transform(tr)
+
+QgsVectorFileWriter.writeAsVectorFormat
+```
+
+#### Final Script
+
+Your final script should look similar to the below. Save the script as a `.py` file to the relevant file location. Now you can open this file in the Editor in the future and run the script to reproduce the results from today (and perhaps build on them). Happy coding!
+
+```
+FINAL SCRIPT
 ```
 
 ## Credits
 
-[PyQGIS 101](https://anitagraser.com/pyqgis-101-introduction-to-qgis-python-programming-for-non-programmers/)
-
-[PyQGIS Developer Cookbook](https://docs.qgis.org/testing/en/docs/pyqgis_developer_cookbook/index.html)
-
-[QGIS Tutorials and Tips](https://www.qgistutorials.com/en/)
+This tutorial was created with the help of many online resources, including but not limited to: 
+* [PyQGIS 101](https://anitagraser.com/pyqgis-101-introduction-to-qgis-python-programming-for-non-programmers/)
+* [PyQGIS Developer Cookbook](https://docs.qgis.org/testing/en/docs/pyqgis_developer_cookbook/index.html)
+* [QGIS Tutorials and Tips](https://www.qgistutorials.com/en/)
