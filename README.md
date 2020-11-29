@@ -237,6 +237,8 @@ layer2.renderer().symbol().setColor(QColor("red"))
 layer2.triggerRepaint()
 ```
 
+![](images/point_symbol.PNG)
+
 Additionally, if you look to the TOC, the icon for the layer has not updated. Use `.refreshLayerSymbology()` on the ID values of the layer to update the icons. 
 
 ```
@@ -257,6 +259,8 @@ Similar to above, we set the renderer with the heatmap argument and use `.trigge
 layer2.setRenderer(heatmap)
 layer2.triggerRepaint()
 ```
+
+![](images/heatmap.PNG)
 
 Interestingly, there appears to be a high concentration of incidents of violence against civilians in the southeast United States around Florida. The heat map offers a quick and easy way for users to visualize data density.
 
