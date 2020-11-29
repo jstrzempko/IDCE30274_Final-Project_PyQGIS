@@ -155,11 +155,11 @@ path4 = "file:///{}/Clark/Year 5/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.
 Additionally, we can use an if-else statement to only add the layer to the map if it is valid. See below. 
 
 ```
-vlayer = QgsVectorLayer(path_to_airports_layer, "Airports layer", "ogr")
-if not vlayer.isValid():
-    print("Layer failed to load!")
+layer1 = QgsVectorLayer(path1, "ACLED_Nov2020", "delimitedtext")
+if not layer1.isValid():
+    print("Layer failed to load")
 else:
-    QgsProject.instance().addMapLayer(vlayer)
+    QgsProject.instance().addMapLayer(layer1)
 ```
 
 Feel free to construct a script that works best for you (so long as it accomplishes the task of adding the correct layer to the map). 
@@ -213,46 +213,109 @@ Notice on the TOC the symbol of a box with prongs around it. When you hover over
 
 <img src="images/scratch.PNG" width="400"/>
 
-We will accomplish this with the `QgsVectorFileWriter`. First, we need to create an output path so that QGIS knows which file to write the information into. Run `os.getcwd()` again if you need to know where your current working directory is. Your output path should begin with the folder within your current working directory that you want to enter. Make sure to end the output path with the name of the exported file. Here, I have named mine export. There is no need to provide a file extension as we will define this as parameter in the function.  
+We will accomplish this with the `QgsVectorFileWriter`. First, we need to create an output path so that QGIS knows which file to write the information into. Run `os.getcwd()` again if you need to know where your current working directory is. Your output path should begin with the folder within your current working directory that you want to enter. Make sure to end the output path with the name of the exported file. Here, I have named mine `export`. There is no need to provide a file extension as we will define this as parameter in the function.  
 
 ```
 output_path = "Clark/Year 5/Comp_Prog/Class_Materials/Final/export"
 QgsVectorFileWriter.writeAsVectorFormat(layer2, output_path, "utf-8", layer.crs(), 'GeoJSON')
 ```
-Within the parameters in writeAsVectorFormat, we provide the name of the layer we are exporting, the output path and file name, the unicode-based encoding to use ([utf-8](https://en.wikipedia.org/wiki/UTF-8)), the crs of the exported file, and the file type. We have chosen GeoJSON as it is a more compact spatial file format than an ESRI shapefile. 
+Within the parameters in `writeAsVectorFormat`, we provide the name of the layer we are exporting, the output path and file name, the unicode-based encoding to use ([utf-8](https://en.wikipedia.org/wiki/UTF-8)), the crs of the exported file, and the file type. We have chosen GeoJSON as it is a more compact spatial file format than an ESRI shapefile. 
 
 #### Visualize Data
 
-Lastly, we will explore the iface options to update the symbology of our two layers. 
+Lastly, we will explore the iface options to update the symbology of our two layers with the `.renderer()` function. As above, copy and paste these lines of code into the console and run them before adding them to the Editor. We use the `.setSize()` function to reduce the size of the points. 
 
 ```
+layer2.renderer().symbol().setSize(1)
+layer2.triggerRepaint()
+```
+
+Notice how we also have to run `.triggerRepaint()` in order for the symbology to update with the changes. Employ a similar process for the below code in order to color our data points red. 
+
+```
+layer2.renderer().symbol().setColor(QColor("red"))
+layer2.triggerRepaint()
+```
+
+Additionally, if you look to the TOC, the icon for the layer has not updated. Use `.refreshLayerSymbology()` on the ID values of the layer to update the icons. 
+
+```
+iface.layerTreeView().refreshLayerSymbology(layer2.id())
+```
+
+The final method we will use to visually explore the data is the heat map. We define `QgsHeatmapRenderer` as the renderer for the layer symbology. Other options include diagram, raster, feature, and graduated symbol renderers. We will use the default radius right now, but radius for the heat map can be defined with `heatmap.setRadius()`. We create our `ramp` variable which uses the Plamsa color ramp (black to purple to white). 
+
+```
+heatmap = QgsHeatmapRenderer()
+ramp = QgsStyle().defaultStyle().colorRamp('Plasma')
+heatmap.setColorRamp(ramp)
+```
+
+Similar to above, we set the renderer with the heatmap argument and use `.triggerRepaint()`to update the symbology. 
+
+```
+layer2.setRenderer(heatmap)
+layer2.triggerRepaint()
+```
+
+Interestingly, there appears to be a high concentration of incidents of violence against civilians in the southeast United States around Florida. The heat map offers a quick and easy way for users to visualize data density.
+
+#### Final Script
+
+Your final script should look similar to the below with modified file paths. Save the script as a `.py` file in the Editor to your chosen file location. Now you can open this file in the Editor in the future and run the script to reproduce the results from today (and perhaps build on them). Happy coding!
+
+Note: Certain commands have been commented out so that the script can be run in a single execution. 
+
+```
+#Set File Path with Delimited Text Parameters
+#path1 = "file:///C:/Users/jas36/Documents/Clark/Year 5/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?type=csv&xField=LONGITUDE&yField=LATITUDE&crs=EPSG:3857"
+#path2 = "file:///C:/Users/jas36/Documents/Clark/Year 5/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?delimiter=,&xField=LONGITUDE&yField=LATITUDE&crs=EPSG:3857"
+path3 = "file:///{}/Clark/Year 5/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?delimiter={}&xField={}&yField={}&crs={}".format(os.getcwd(), ",", "LONGITUDE", "LATITUDE", "EPSG:3857")
+
+# Use QgsVectorLayer to create a Vector Layer with the csv file
+layer1 = QgsVectorLayer(path3, "ACLED_Nov2020", "delimitedtext")
+
+# To Add the Vector Layer as a Map Layer
+QgsProject.instance().addMapLayer(layer1)
+
+# To Remove the Map Layer
+#QgsProject.instance().removeMapLayer(layer1)
+
+# Output Field Names and Types
+for field in layer1.fields():
+    print(field.name(), field.typeName())
+
+# To Show the Attribute Table (in another window)
+#iface.showAttributeTable(layer1)
+
+# Make our layer the Active Layer and Select by Attributes
+layer = iface.activeLayer()
+layer.selectByExpression('"ADMIN1"!=\'Alaska\' and "ADMIN1"!=\'Hawaii\' and "EVENT_TYPE"=\'Violence against civilians\'', QgsVectorLayer.SetSelection)
+
+# Create a new layer from Selected Features
+layer = iface.activeLayer()
+layer2 = layer.materialize(QgsFeatureRequest().setFilterFids(layer.selectedFeatureIds()))
+QgsProject.instance().addMapLayer(layer2)
+
+#Export Layer
+output_path = "Clark/Year 5/Comp_Prog/Class_Materials/Final/export"
+QgsVectorFileWriter.writeAsVectorFormat(layer2, output_path, "utf-8", layer.crs(), 'GeoJSON')
+
 # Change Symbology using iface
 layer2.renderer().symbol().setSize(1)
 layer2.triggerRepaint()
 layer2.renderer().symbol().setColor(QColor("red"))
 layer2.triggerRepaint()
-```
 
-```
 # Updates the Table of Contents
 iface.layerTreeView().refreshLayerSymbology(layer2.id())
 
 # Use Heatmap Symbology to visualize
 heatmap = QgsHeatmapRenderer()
-heatmap.setRadius(10)
-ramp = QgsStyle().defaultStyle().colorRamp('Plasma')
+ramp = QgsStyle().defaultStyle().colorRamp('Magma')
 heatmap.setColorRamp(ramp)
 layer2.setRenderer(heatmap)
 layer2.triggerRepaint()
-layer2.setRenderer(
-```
-
-#### Final Script
-
-Your final script should look similar to the below. Save the script as a `.py` file to the relevant file location. Now you can open this file in the Editor in the future and run the script to reproduce the results from today (and perhaps build on them). Happy coding!
-
-```
-FINAL SCRIPT
 ```
 
 ## Credits
