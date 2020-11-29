@@ -205,7 +205,9 @@ layer2 = layer.materialize(QgsFeatureRequest().setFilterFids(layer.selectedFeatu
 QgsProject.instance().addMapLayer(layer2)
 ```
 
-As can be seen in the code above, we use materialize to create a memory layer and request the features of the selected feature IDs to compose the new layer. Similar to before, we run the `.addMapLayer()` function with the argument of the new memory layer in order to see it display.  
+As can be seen in the code above, we use materialize to create a memory layer and request the features of the selected feature IDs to compose the new layer. Similar to before, we run the `.addMapLayer()` function with the argument of the new memory layer in order to see it display. Layer2 is shown below.
+
+![](images/layer2.PNG)
 
 Lastly, we will
 
