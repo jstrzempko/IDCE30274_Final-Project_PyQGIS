@@ -182,20 +182,20 @@ Another way to accomplish this is to employ iface. In the words of Anita Graser 
 iface.showAttributeTable(layer1)
 ```
 
-When we run the above code in the console, it should open the attribute table for us, as shown below. Take note of the "ADMIN1" and "SUB_EVENT_TYPE" fields. Add this code to your script in the Editor, but feel free to comment it out so that it is not run everytime the script is run from this point forward. 
+When we run the above code in the console, it should open the attribute table for us, as shown below. Take note of the "ADMIN1" and "EVENT_TYPE" fields. Add this code to your script in the Editor, but feel free to comment it out so that it is not run everytime the script is run from this point forward. 
 
 ![](images/attribute_table.PNG)
 
-#### Perform Analysis
+#### Filter Data & Export
 
-Lastly, we will perform some preliminary analysis on the data in order to explore peaceful protests that occurred in the contiguous US from May to November 2020. To begin, we want to define a variable that uses the iface class to point toward the active layer. Run `iface.activeLayer()` in the console and you will see the current active layer. 
+Lastly, we will perform some preliminary analysis on the data in order to explore incidents of violence against civilians that occurred in the contiguous US from May to November 2020. To begin, we want to define a variable that uses the iface class to point toward the active layer. Run `iface.activeLayer()` in the console and you will see the current active layer. 
 
 ```
 layer = iface.activeLayer()
-layer.selectByExpression('"ADMIN1"!=\'Alaska\' and "ADMIN1"!=\'Hawaii\' and "SUB_EVENT_TYPE"=\'Peaceful protest\'', QgsVectorLayer.SetSelection)
+layer.selectByExpression('"ADMIN1"!=\'Alaska\' and "ADMIN1"!=\'Hawaii\' and "EVENT_TYPE"=\'Violence against civilians\'', QgsVectorLayer.SetSelection)
 ```
 
-Run the above lines in the console before adding them to the Editor. Note how we have used query expressions to select peaceful protests that occurred in only the contiguous US (ADMIN1 not equal to Alaska and Hawaii). 
+Run the above lines in the console before adding them to the Editor. Note how we have used query expressions to select incidents of violence against civilians (EVENT_TYPE equal to Violence against civilians) that occurred in only the contiguous US (ADMIN1 not equal to Alaska and Hawaii). 
 
 You will notice when you run this code that some of the points in the layer are highlighted yellow while others are not. The yellow points represent the selected features. Next, we want to create a new layer from the selected features. This will involve accessing the active layer again. Run these lines of code one at a time in the console and then add them to the script in the Editor. 
 
@@ -209,34 +209,42 @@ As can be seen in the code above, we use materialize to create a memory layer an
 
 ![](images/layer2.PNG)
 
-Lastly, we will
+Notice on the TOC the symbol of a box with prongs around it. When you hover over it, it will tell you that this is a temporary scratch layer. This is because we have created a memory layer which we have not written out to the local computer's disk.
+
+<img src="images/scratch.PNG" width="400"/>
+
+We will accomplish this with the `QgsVectorFileWriter`. First, we need to create an output path so that QGIS knows which file to write the information into. Run `os.getcwd()` again if you need to know where your current working directory is. Your output path should begin with the folder within your current working directory that you want to enter. Make sure to end the output path with the name of the exported file. Here, I have named mine export. There is no need to provide a file extension as we will define this as parameter in the function.  
 
 ```
-for feature in layer.getFeatures(QgsFeatureRequest()):
-    
+output_path = "Clark/Year 5/Comp_Prog/Class_Materials/Final/export"
+QgsVectorFileWriter.writeAsVectorFormat(layer2, output_path, "utf-8", layer.crs(), 'GeoJSON')
+```
+Within the parameters in writeAsVectorFormat, we provide the name of the layer we are exporting, the output path and file name, the unicode-based encoding to use ([utf-8](https://en.wikipedia.org/wiki/UTF-8)), the crs of the exported file, and the file type. We have chosen GeoJSON as it is a more compact spatial file format than an ESRI shapefile. 
 
-# Reproject to EPSG 5070 (Albers Equal Area Contiguous US)
-#crsSrc = QgsCoordinateReferenceSystem("EPSG:4326")
-#crsDest = QgsCoordinateReferenceSystem("EPSG:5070")
-#transformContext = QgsProject.instance().transformContext()
-#xform = QgsCoordinateTransform(crsSrc, crsDest, transformContext)
+#### Visualize Data
 
-# forward transformation: src -> dest
-#ACLED_features = ACLED_protest.getFeatures()
-#for feature in ACLED_features:
-#    xform.transform(feature)
+Lastly, we will explore the iface options to update the symbology of our two layers. 
 
-#QgsProject.instance().addMapLayer(ACLED_features)
+```
+# Change Symbology using iface
+layer2.renderer().symbol().setSize(1)
+layer2.triggerRepaint()
+layer2.renderer().symbol().setColor(QColor("red"))
+layer2.triggerRepaint()
+```
 
-#ACLED_albers = xform.transform(ACLED_protest)
-#QgsProject.instance().addMapLayer(ACLED_albers)
+```
+# Updates the Table of Contents
+iface.layerTreeView().refreshLayerSymbology(layer2.id())
 
-#sourceCrs = QgsCoordinateReferenceSystem(3857)
-#destCrs = QgsCoordinateReferenceSystem(5070)
-#tr = QgsCoordinateTransform(sourceCrs, destCrs, QgsProject.instance())
-#myGeometryInstance.transform(tr)
-
-QgsVectorFileWriter.writeAsVectorFormat
+# Use Heatmap Symbology to visualize
+heatmap = QgsHeatmapRenderer()
+heatmap.setRadius(10)
+ramp = QgsStyle().defaultStyle().colorRamp('Plasma')
+heatmap.setColorRamp(ramp)
+layer2.setRenderer(heatmap)
+layer2.triggerRepaint()
+layer2.setRenderer(
 ```
 
 #### Final Script
