@@ -182,16 +182,52 @@ Another way to accomplish this is to employ iface. In the words of Anita Graser 
 iface.showAttributeTable(layer1)
 ```
 
-When we run the above code in the console, it should open the attribute table for us, as shown below. Take note of the "ADMIN1" and "SUB_EVENT_TYPE" fields. 
+When we run the above code in the console, it should open the attribute table for us, as shown below. Take note of the "ADMIN1" and "SUB_EVENT_TYPE" fields. Add this code to your script in the Editor, but feel free to comment it out so that it is not run everytime the script is run from this point forward. 
 
 ![](images/attribute_table.PNG)
 
 #### Perform Analysis
 
+Lastly, we will perform some preliminary analysis on the data in order to explore peaceful protests that occurred in the contiguous US from May to November 2020. To begin, we want to define a variable that uses the iface class to point toward the active layer. Run `iface.activeLayer()` in the console and you will see the current active layer. 
+
 ```
-iface.setActiveLayer(layer)
 layer = iface.activeLayer()
 layer.selectByExpression('"ADMIN1"!=\'Alaska\' and "ADMIN1"!=\'Hawaii\' and "SUB_EVENT_TYPE"=\'Peaceful protest\'', QgsVectorLayer.SetSelection)
+```
+
+Run the above lines in the console before adding them to the Editor. Note how we have used query expressions to select peaceful protests that occurred in only the contiguous US (ADMIN1 not equal to Alaska and Hawaii). 
+
+You will notice when you run this code that some of the points in the layer are highlighted yellow while others are not. The yellow points represent the selected features. Next, we want to create a new layer from the selected features. This will involve accessing the active layer again. Run these lines of code one at a time in the console and then add them to the script in the Editor. 
+
+```
+layer = iface.activeLayer()
+layer2 = layer.materialize(QgsFeatureRequest().setFilterFids(layer.selectedFeatureIds()))
+QgsProject.instance().addMapLayer(layer2)
+```
+
+As can be seen in the code above, we use materialize to create a memory layer and request the features of the selected feature IDs to compose the new layer. Similar to before, we run the `.addMapLayer()` function with the argument of the new memory layer in order to see it display.  
+
+```
+# Reproject to EPSG 5070 (Albers Equal Area Contiguous US)
+#crsSrc = QgsCoordinateReferenceSystem("EPSG:4326")
+#crsDest = QgsCoordinateReferenceSystem("EPSG:5070")
+#transformContext = QgsProject.instance().transformContext()
+#xform = QgsCoordinateTransform(crsSrc, crsDest, transformContext)
+
+# forward transformation: src -> dest
+#ACLED_features = ACLED_protest.getFeatures()
+#for feature in ACLED_features:
+#    xform.transform(feature)
+
+#QgsProject.instance().addMapLayer(ACLED_features)
+
+#ACLED_albers = xform.transform(ACLED_protest)
+#QgsProject.instance().addMapLayer(ACLED_albers)
+
+#sourceCrs = QgsCoordinateReferenceSystem(3857)
+#destCrs = QgsCoordinateReferenceSystem(5070)
+#tr = QgsCoordinateTransform(sourceCrs, destCrs, QgsProject.instance())
+#myGeometryInstance.transform(tr)
 ```
 
 ## Credits
@@ -200,3 +236,4 @@ layer.selectByExpression('"ADMIN1"!=\'Alaska\' and "ADMIN1"!=\'Hawaii\' and "SUB
 
 [PyQGIS Developer Cookbook](https://docs.qgis.org/testing/en/docs/pyqgis_developer_cookbook/index.html)
 
+[QGIS Tutorials and Tips](https://www.qgistutorials.com/en/)
