@@ -76,7 +76,7 @@ Once you have opened QGIS, explore the menu and buttons. The user interface is v
 
 Similar to the way `import arcpy` is run automatically when the Python console is opened in ArcMap, the following statements are executed in the QGIS Python console as an initial default. Since we will be working within the console, there is no need to run these lines of code, but it is good to know. 
 
-```
+```Python
 from qgis.core import *
 import qgis.utils
 ```
@@ -85,7 +85,7 @@ import qgis.utils
 
 First thing we will do is run the following command in the Python console. Within the miscellaneous operating system interfaces (`os`), we will use the `.getcwd()` function to get the current working directory. You can copy and paste the code below or type it in yourself after the `>>>` symbol in the bottom of the console. You can then press Enter or hit the Run Command button (small blue triangle) as shown below. As you can see, my current working directory is `'C:\\Users\\jas36\\Documents'`.
 
-```
+```Python
 os.getcwd()
 ```
 
@@ -109,19 +109,19 @@ To import the csv file, we would normally use the QGIS Graphic User Interface (G
 
 Instead, will construct a script to do this for us! The first thing we will create is a string that gives the file path within the Editor. All QGIS file paths must begin with `file:///`. Assign your file path the name `path1` and finish it with the file name and extension. See my example below. 
 
-```
+```Python
 path1 = "file:///C:/Users/jas36/Documents/Clark/Year 5/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv"
 ```
 
 Next, we will add to this path so that QGIS can recognize our file type and interpret the proper fields to plot the location of the point data. Add `?type=csv` to the end of the file path string. Next, add `&xField=LONGITUDE` and `&yField=LATITUDE` immediately after this. This tells QGIS to look for a csv file with the field names LONGITUDE and LATITUDE for the x and y fields for plotting. 
 
-```
+```Python
 path1 = "file:///C:/Users/jas36/Documents/Clark/Year 5/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?type=csv&xField=LONGITUDE&yField=LATITUDE"
 ```
 
 Next, we will use the `QgsVectorLayer` function to construct a vector layer using our path name then we will add this layer to the map. The format is `layer = QgsVectorLayer(data_source, layer_name, provider_name)` where layer_name will be the name assigned to the layer in the Table of Contents. In our instance, provider_name is "delimitedtext," a more general term for a CSV file in which delimiters can be more than just commas. See my example below to add to your script. 
 
-```
+```Python
 layer1 = QgsVectorLayer(path1, "ACLED_Nov2020", "delimitedtext")
 QgsProject.instance().addMapLayer(layer1)
 ```
@@ -130,31 +130,31 @@ Run the script using the Run Script button in the top ribbon of the Editor. The 
 
 Note the box with the question mark next to the layer that says "Layer has no coordinate reference system set!" when hovered over. We can modify our existing script to fix this and set a coordinate reference system in one fell swoop. First, we must remove the unreferenced layer. Run the below code in the console (not the Editor), and the layer should disappear from the TOC. 
 
-```
+```Python
 QgsProject.instance().removeMapLayer(layer1)
 ```
 
 Copy and paste path1 to create path2 directly below it. Comment out path1. In path2, add `&crs=EPSG:3857` to the end. EPSG 3587 is a Spherical Mercator projection coordinate system used by web services such as Google and OpenStreetMap. Run the script again, making sure to change the path name from path1 to path2 in the second line. 
 
-```
+```Python
 path2 = "file:///C:/Users/jas36/Documents/Clark/Year 5/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?type=csv&xField=LONGITUDE&yField=LATITUDE&crs=EPSG:3857"
 ```
 
 There are other ways to construct this file path. For instance, replacing `?type=csv` with `?delimiter=,` to create a path name like so. 
 
-```
+```Python
 path3 = "file:///C:/Users/jas36/Documents/Clark/Year 5/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?delimiter=,&xField=LONGITUDE&yField=LATITUDE&crs=EPSG:3857"
 ```
 
 An even fancier method is to employ the `.format()` and `os.getcwd()` functions. See below. 
 
-```
+```Python
 path4 = "file:///{}/Clark/Year 5/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?delimiter={}&xField={}&yField={}&crs={}".format(os.getcwd(), ",", "LONGITUDE", "LATITUDE", "EPSG:3857")
 ```
 
 Additionally, we can use an if-else statement to only add the layer to the map if it is valid. See below. 
 
-```
+```Python
 layer1 = QgsVectorLayer(path1, "ACLED_Nov2020", "delimitedtext")
 if not layer1.isValid():
     print("Layer failed to load")
@@ -168,7 +168,7 @@ Feel free to construct a script that works best for you (so long as it accomplis
 
 Next, we will explore the data we have imported by examining the fields in the attribute table. One way we can accomplish this is to access the fields in the layer using the  `.fields()` function and iterate through them to output both the field names and types. Run the following the for loop in your console then add this to your script in the Editor (without running it here as it will produce another vector layer). 
 
-```
+```Python
 for field in layer1.fields():
     print(field.name(), field.typeName())
 ```
@@ -178,7 +178,7 @@ Below is a sample of the output you should get.
 
 Another way to accomplish this is to employ iface. In the words of Anita Graser from the blog ["Free and Open Source GIS Ramblings,"](https://anitagraser.com/) "iface is an object belonging to QGIS – something that has properties and behaviors we can use to interact with QGIS. iface is a very important object in QGIS because without it, we could not interact with QGIS or any layers loaded in our project." The iface class is used to access graphical components in QGIS such as the displayed layers.
 
-```
+```Python
 iface.showAttributeTable(layer1)
 ```
 
@@ -190,7 +190,7 @@ When we run the above code in the console, it should open the attribute table fo
 
 Lastly, we will perform some preliminary analysis on the data in order to explore incidents of violence against civilians that occurred in the contiguous US from May to November 2020. To begin, we want to define a variable that uses the iface class to point toward the active layer. Run `iface.activeLayer()` in the console and you will see the current active layer. 
 
-```
+```Python
 layer = iface.activeLayer()
 layer.selectByExpression('"ADMIN1"!=\'Alaska\' and "ADMIN1"!=\'Hawaii\' and "EVENT_TYPE"=\'Violence against civilians\'', QgsVectorLayer.SetSelection)
 ```
@@ -199,7 +199,7 @@ Run the above lines in the console before adding them to the Editor. Note how we
 
 You will notice when you run this code that some of the points in the layer are highlighted yellow while others are not. The yellow points represent the selected features. Next, we want to create a new layer from the selected features. This will involve accessing the active layer again. Run these lines of code one at a time in the console and then add them to the script in the Editor. 
 
-```
+```Python
 layer = iface.activeLayer()
 layer2 = layer.materialize(QgsFeatureRequest().setFilterFids(layer.selectedFeatureIds()))
 QgsProject.instance().addMapLayer(layer2)
@@ -215,7 +215,7 @@ Notice on the TOC the symbol of a box with prongs around it. When you hover over
 
 We will accomplish this with the `QgsVectorFileWriter`. First, we need to create an output path so that QGIS knows which file to write the information into. Run `os.getcwd()` again if you need to know where your current working directory is. Your output path should begin with the folder within your current working directory that you want to enter. Make sure to end the output path with the name of the exported file. Here, I have named mine `export`. There is no need to provide a file extension as we will define this as parameter in the function.  
 
-```
+```Python
 output_path = "Clark/Year 5/Comp_Prog/Class_Materials/Final/export"
 QgsVectorFileWriter.writeAsVectorFormat(layer2, output_path, "utf-8", layer.crs(), 'GeoJSON')
 ```
@@ -225,14 +225,14 @@ Within the parameters in `writeAsVectorFormat`, we provide the name of the layer
 
 Lastly, we will explore the iface options to update the symbology of our two layers with the `.renderer()` function. As above, copy and paste these lines of code into the console and run them before adding them to the Editor. We use the `.setSize()` function to reduce the size of the points. 
 
-```
+```Python
 layer2.renderer().symbol().setSize(1)
 layer2.triggerRepaint()
 ```
 
 Notice how we also have to run `.triggerRepaint()` in order for the symbology to update with the changes. Employ a similar process for the below code in order to color our data points red. 
 
-```
+```Python
 layer2.renderer().symbol().setColor(QColor("red"))
 layer2.triggerRepaint()
 ```
@@ -241,13 +241,13 @@ layer2.triggerRepaint()
 
 Additionally, if you look to the TOC, the icon for the layer has not updated. Use `.refreshLayerSymbology()` on the ID values of the layer to update the icons. 
 
-```
+```Python
 iface.layerTreeView().refreshLayerSymbology(layer2.id())
 ```
 
 The final method we will use to visually explore the data is the heat map. We define `QgsHeatmapRenderer` as the renderer for the layer symbology. Other options include diagram, raster, feature, and graduated symbol renderers. We will use the default radius right now, but radius for the heat map can be defined with `heatmap.setRadius()`. We create our `ramp` variable which uses the Plamsa color ramp (black to purple to white). 
 
-```
+```Python
 heatmap = QgsHeatmapRenderer()
 ramp = QgsStyle().defaultStyle().colorRamp('Plasma')
 heatmap.setColorRamp(ramp)
@@ -255,7 +255,7 @@ heatmap.setColorRamp(ramp)
 
 Similar to above, we set the renderer with the heatmap argument and use `.triggerRepaint()`to update the symbology. 
 
-```
+```Python
 layer2.setRenderer(heatmap)
 layer2.triggerRepaint()
 ```
@@ -270,7 +270,7 @@ Your final script should look similar to the below with modified file paths. Sav
 
 Note: Certain commands have been commented out so that the script can be run in a single execution. 
 
-```
+```Python
 #Set File Path with Delimited Text Parameters
 #path1 = "file:///C:/Users/jas36/Documents/Clark/Year 5/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?type=csv&xField=LONGITUDE&yField=LATITUDE&crs=EPSG:3857"
 #path2 = "file:///C:/Users/jas36/Documents/Clark/Year 5/Comp_Prog/Class_Materials/Final/USA_2020_Nov21.csv?delimiter=,&xField=LONGITUDE&yField=LATITUDE&crs=EPSG:3857"
