@@ -119,7 +119,9 @@ This will bring up the Editor window next to the Python console. Make the Editor
 
 Next, we will need the path to the ACLED file we want to access. We only need to know the subfolders that the file resides in beyond the working directory. So, in my case, we will already be starting in the Documents folder and only need to construct the path name from there. I suggest finding the full file path by opening the File Explorer and navigating to the file, named something like `USA_2020_Nov21.csv`. Right click the file and select Properties to find the file location as shown below. Copy the entire file path starting from the drive (C: drive in my case) for use in the following exercises. 
 
-![](images/file_location.PNG)
+<p align="center">
+  <img src="images/file_location.PNG" width="400"/>
+</p>
 
 To import the csv file, we would normally use the QGIS Graphic User Interface (GUI) to select Layer > Add Layer > Add Delimited Text Layer. From there we would select the correct file name and select the option for a CSV file format. This is shown below for those unfamiliar with the QGIS GUI.
 
@@ -192,7 +194,7 @@ for field in layer1.fields():
 ```
 Below is a sample of the output you should get. 
 
-![](images/fieldnames_types.PNG)
+<img src="images/fieldnames_types.PNG" width="400"/>
 
 Another way to accomplish this is to employ iface. In the words of Anita Graser from the blog ["Free and Open Source GIS Ramblings,"](https://anitagraser.com/) "iface is an object belonging to QGIS – something that has properties and behaviors we can use to interact with QGIS. iface is a very important object in QGIS because without it, we could not interact with QGIS or any layers loaded in our project." The iface class is used to access graphical components in QGIS such as the displayed layers.
 
