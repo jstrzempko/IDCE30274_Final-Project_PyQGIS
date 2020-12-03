@@ -34,39 +34,57 @@ I would recommend downloading using OSGeo4W if you intend to perform further GIS
 
 **<p align="center"> After downloading OSGeo4W from the above website, open the OSGeo4W Net Release Setup Program and you should see the below screen. Select Advanced Install then Next. </p>**
 
-![](images/osgeo4w_setup.PNG)
+<p align="center">
+  <img src="images/osgeo4w_setup.PNG" width="600" />
+</p>
 
 **<p align="center"> We will be downloading from the internet, so ensure you have a strong wifi connection before performing the below steps. Choose Install from Internet then Next. </p>**
 
-![](images/osgeo4w_setup2.PNG)
+<p align="center">
+  <img src="images/osgeo4w_setup2.PNG" width="600" />
+</p>
 
 **<p align="center"> Choose the Installation Directory. I typically leave the Root Directory as the default and opt to add an icon on both my Desktop and Start Menu. </p>**
 
-![](images/osgeo4w_setup3.PNG)
+<p align="center">
+  <img src="images/osgeo4w_setup3.PNG" width="600" />
+</p>
 
 **<p align="center"> Select Local Package Directory. Again, leaving this as the default option is a good decision. </p>**
 
-![](images/osgeo4w_setup4.PNG)
+<p align="center">
+  <img src="images/osgeo4w_setup4.PNG" width="600" />
+</p>
 
 **<p align="center"> Select your Internet Connection type. Most often, this will be Direct Connection. </p>**
 
-![](images/osgeo4w_setup5.PNG)
+<p align="center">
+  <img src="images/osgeo4w_setup5.PNG" width="600" />
+</p>
 
 **<p align="center"> Choose a download site. I generally select one of the OSGeo ones. </p>**
 
-![](images/osgeo4w_setup6.PNG)
+<p align="center">
+  <img src="images/osgeo4w_setup6.PNG" width="600" />
+</p>
 
 **<p align="center"> Here, you will select the packages to install. As you can see in the below screenshot, I have version 3.12.3-1 of QGIS already installed, but can update to 3.16.0-1 by hitting Skip next to the Package name to change the action performed. Do this for qgis: QGIS Desktop. Don't worry about dependencies for now and don’t blindly do a full install of available packages. Select Next. </p>**
 
-![](images/osgeo4w_setup7.PNG)
+<p align="center">
+  <img src="images/osgeo4w_setup7.PNG" />
+</p>
 
 **<p align="center"> Here are the dependencies! OSGeo4W will resolve them for you by installing them at the same time. If these components are not installed, your QGIS copy will be rendered unusable. Ensure the box to install them is selected at the bottom of the page. </p>**
 
-![](images/osgeo4w_setup8.PNG)
+<p align="center">
+  <img src="images/osgeo4w_setup8.PNG" />
+</p>
 
 **<p align="center"> Now, when you go to your start menu and type QGIS you should see the QGIS 3 App! Select it to get started. </p>**
 
-![](images/qgis_startmennu.PNG)
+<p align="center">
+  <img src="images/qgis_startmennu.PNG" width="600" />
+</p>
 
 ### PyQGIS
 
@@ -211,7 +229,9 @@ As can be seen in the code above, we use materialize to create a memory layer an
 
 Notice on the TOC the symbol of a box with prongs around it. When you hover over it, it will tell you that this is a temporary scratch layer. This is because we have created a memory layer which we have not written out to the local computer's disk.
 
-<img src="images/scratch.PNG" width="400"/>
+<p align="center">
+  <img src="images/scratch.PNG" width="400"/>
+</p>
 
 We will accomplish this with the `QgsVectorFileWriter`. First, we need to create an output path so that QGIS knows which file to write the information into. Run `os.getcwd()` again if you need to know where your current working directory is. Your output path should begin with the folder within your current working directory that you want to enter. Make sure to end the output path with the name of the exported file. Here, I have named mine `export`. There is no need to provide a file extension as we will define this as parameter in the function.  
 
